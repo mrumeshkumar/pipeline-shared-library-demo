@@ -22,10 +22,6 @@ node {
       
     dir('HelloWorldTests/bin/Release')
     {
-      //  def UnitTestResultfile = "${env.BUILD_NUMBER}_UnitTestResult.trx"
-       // bat "\"${tool 'MSTest2017'}\" /testResultFile:${UnitTestResultfile}
-       //println "${env.BUILD_NUMBER}_UnitTestResult.trx"
-     // bat "\"${tool 'MSTest2017'}\" /resultsfile:${env.BUILD_NUMBER}_UnitTestResult.trx"
       mstest()
     }
   }
