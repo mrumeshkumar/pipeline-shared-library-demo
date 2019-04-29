@@ -1,0 +1,36 @@
+node {
+   echo 'Hello World'
+   stage('Clone sources') {
+         git 'https://github.com/mrumeshkumar/HelloWorld.git'
+    }
+  stage('Build Project'){
+    bat "\"${tool 'MSBuild2017'}\" HelloWorld.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER}" 
+  }
+  stage('UnitTest'){
+      dir('HelloWorldTests/bin/Release')
+    {
+          bat "\"${tool 'MSTest2017'}\" /testcontainer:HelloWorldTests.dll /resultsfile:${env.BUILD_NUMBER}_UnitTestResult.trx"
+
+    }
+  }
+  stage ('Archive')
+      { dir('HelloWorld/bin/Release'){
+    		archiveArtifacts '/**'
+      }
+  }
+  stage('PublishUnitTestResult'){
+      
+    dir('HelloWorldTests/bin/Release')
+    {
+      //  def UnitTestResultfile = "${env.BUILD_NUMBER}_UnitTestResult.trx"
+       // bat "\"${tool 'MSTest2017'}\" /testResultFile:${UnitTestResultfile}
+       //println "${env.BUILD_NUMBER}_UnitTestResult.trx"
+     // bat "\"${tool 'MSTest2017'}\" /resultsfile:${env.BUILD_NUMBER}_UnitTestResult.trx"
+      mstest()
+    }
+  }
+  stage('DeleteDir'){
+      deleteDir()
+  }
+ 
+}
