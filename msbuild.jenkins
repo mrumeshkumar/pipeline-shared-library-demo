@@ -13,15 +13,14 @@ node {
 
     }
   }
-  stage ('Archive')
-      { dir('HelloWorld/bin/Release'){
+  stage ('Archive'){ 
+      dir('HelloWorld/bin/Release'){
     		archiveArtifacts '/**'
       }
   }
   stage('PublishUnitTestResult'){
       
-    dir('HelloWorldTests/bin/Release')
-    {
+    dir('HelloWorldTests/bin/Release'){
       mstest()
     }
   }
