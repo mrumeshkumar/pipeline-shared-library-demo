@@ -13,19 +13,14 @@ node {
 
     }
   }
-  stage ('Archive')
-      { dir('HelloWorld/bin/Release'){
+  stage ('Archive'){ 
+      dir('HelloWorld/bin/Release'){
     		archiveArtifacts '/**'
       }
   }
   stage('PublishUnitTestResult'){
       
-    dir('HelloWorldTests/bin/Release')
-    {
-      //  def UnitTestResultfile = "${env.BUILD_NUMBER}_UnitTestResult.trx"
-       // bat "\"${tool 'MSTest2017'}\" /testResultFile:${UnitTestResultfile}
-       //println "${env.BUILD_NUMBER}_UnitTestResult.trx"
-     // bat "\"${tool 'MSTest2017'}\" /resultsfile:${env.BUILD_NUMBER}_UnitTestResult.trx"
+    dir('HelloWorldTests/bin/Release'){
       mstest()
     }
   }
